@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ event.title }}</h1>
+    <p>Date: {{ event.date|date:"F d, Y" }}</p>
+    <p>Location: {{ event.location }}</p>
+    <p>Organizer: {{ event.organizer.username }}</p>
+    <p>{{ event.description }}</p>
+
+    {% if user.is_authenticated %}
+        <h3>RSVP</h3>
+        <form method="post" action="{% url 'event-rsvp' event.pk %}">
+            {% csrf_token %}
+            <select name="rsvp_status" class="form-select mb-3">
+                <option value="Yes" {% if user_rsvp.rsvp_status == 'Yes' %}selected{% endif %}>Yes</option>
+                <option value="No" {% if user_rsvp.rsvp_status == 'No' %}selected{% endif %}>No</option>
+                <option value="Maybe" {% if user_rsvp.rsvp_status == 'Maybe' %}selected{% endif %}>Maybe</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Update RSVP</button>
+        </form>
+    {% endif %}
+
+    {% if user == event.organizer %}
+        <a href="{% url 'event-update' event.pk %}" class="btn btn-secondary mt-3">Update Event</a>
+        <a href="{% url 'event-delete' event.pk %}" class="btn btn-danger mt-3">Delete Event</a>
+        <a href="{% url 'send-reminder' event.pk %}" class="btn btn-info mt-3">Send Reminder</a>
+    {% endif %}
+
+    <h3 class="mt-4">Attendees</h3>
+    <ul>
+    {% for attendee in attendees %}
+        <li>{{ attendee.user.username }} - {{ attendee.rsvp_status }}</li>
+    {% empty %}
+        <li>No attendees yet.</li>
+    {% endfor %}
+    </ul>
+{% endblock content %}
