@@ -83,9 +83,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-# Login and Logout URLs
-LOGIN_REDIRECT_URL = 'event-list'
-LOGOUT_REDIRECT_URL = ''
+# At the end of your settings.py file
+LOGIN_REDIRECT_URL = 'user-profile'  # We'll create this view
+LOGOUT_REDIRECT_URL = 'event-list'
 
 # Email backend (for development)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

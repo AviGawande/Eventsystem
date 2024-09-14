@@ -6,7 +6,8 @@ from .views import (
     EventUpdateView,
     EventDeleteView,
     rsvp_event,
-    send_reminder
+    send_reminder,
+    user_profile
 )
 
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
     path('event/<int:pk>/delete/', EventDeleteView.as_view(), name='event-delete'),
     path('event/<int:pk>/rsvp/', rsvp_event, name='event-rsvp'),
     path('event/<int:pk>/send-reminder/', send_reminder, name='send-reminder'),
+    path('profile/', user_profile, name='user-profile'),
 ]

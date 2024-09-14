@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Welcome, {{ user.username }}!</h1>
+
+<h2>Your Events</h2>
+{% if user_events %}
+    <ul>
+    {% for event in user_events %}
+        <li>
+            <a href="{% url 'event-detail' event.pk %}">{{ event.title }}</a>
+            ({{ event.date }})
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>You haven't created any events yet.</p>
+{% endif %}
+
+<a href="{% url 'event-create' %}" class="btn btn-primary">Create New Event</a>
+
+<h2>Events You're Attending</h2>
+{% if attended_events %}
+    <ul>
+    {% for event in attended_events %}
+        <li>
+            <a href="{% url 'event-detail' event.pk %}">{{ event.title }}</a>
+            ({{ event.date }})
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>You're not attending any events yet.</p>
+{% endif %}
+
+{% endblock content %}

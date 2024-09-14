@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from .models import Event, Attendee, Notification
 
@@ -93,3 +94,13 @@ def send_reminder(request, pk):
     else:
         messages.error(request, 'You do not have permission to send reminders for this event')
     return redirect('event-detail', pk=pk)
+
+@login_required
+def user_profile(request):
+    user_events = Event.objects.filter(organizer=request.user).order_by('-date')
+    attended_events = Event.objects.filter(attendees__user=request.user).order_by('-date')
+    context = {
+        'user_events': user_events,
+        'attended_events': attended_events,
+    }
+    return render(request, 'users/profile.html', context)
